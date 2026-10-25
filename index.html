@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobFinder - Find Your Dream Job</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+   <style>
+    * { margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+}
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #29256f;
+  background: #f7f7ff;
+}
+/* ===== NAVBAR ===== */
+.navbar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 4%;
+  color: white;
+  background: linear-gradient(110deg,#3420b7,#5732e8,#087cf5,#3824c5);
+  background-size: 300% 300%;
+  animation: gradientMove 10s ease infinite;
+}
+/* Curved lower edge */
+.navbar::after{
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -5%;
+  bottom: -20px;
+  width: 110%;
+  height: 35px;
+  background: linear-gradient(110deg, #4931db, #1688ff, #5030d9);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  clip-path: ellipse(55% 48% at 50% 0%);
+  pointer-events: none;
+}
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: clamp(22px, 2.5vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.logo-icon {
+  font-size: 30px;
+  transition: transform 0.4s ease;
+}
+.logo:hover .logo-icon {
+  transform: rotate(-12deg) scale(1.12);
+}
+.logo-highlight {
+  color: #a8d8ff;
+}
+/* Navigation links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.nav-links a {
+  position: relative;
+  padding: 10px 3px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 0;
+  height: 3px;
+  background: #fff176;
+  border-radius: 10px;
+  box-shadow: 0 0 12px #fff176;
+  transform: translateX(-50%);
+  transition: width 0.35s ease;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  color: #fff176;
+}
+.nav-links a:hover {
+  transform: translateY(-3px);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+/* ===== HERO SECTION ===== */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 425px;
+  padding: 72px 20px 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  background: linear-gradient( 120deg, #7045f5, #344be6, #087df1, #5538e6, #7045f5);
+  background-size: 300% 300%;
+  animation: gradientMove 12s ease infinite;
+  border-radius: 0 0 50% 3% / 0 0 9% 5%;
+}
+/* Decorative wave */
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -5%;
+  bottom: -48px;
+  width: 110%;
+  height: 90px;
+  background: #f7f7ff;
+  border-radius: 50% 45% 0 0 / 45% 50% 0 0;
+  transform: rotate(-1deg);
+}
+/* Thin glowing wave at top */
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -32px;
+  left: -5%;
+  width: 110%;
+  height: 75px;
+  border-bottom: 5px solid #6eb5ff99;
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* Hero text */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1000px;
+  animation: fadeUp 1s ease both;
+}
+.eyebrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  letter-spacing: 1.3px;
+}
+.eyebrow span {
+  width: 30px;
+  height: 2px;
+  background: #c5dfff;
+}
+.hero h1 {
+  margin-bottom: 16px;
+  font-size: clamp(36px, 5.2vw, 68px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  text-shadow: 0 5px 20px #201c8540;
+}
+.dream {
+  background: linear-gradient(90deg, #ff91db, #e9baff, #a4c8ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: textGlow 3s ease-in-out infinite alternate;
+}
+.job-word {
+  color: #b3d9ff;
+}
+.hero-description {
+  margin-bottom: 35px;
+  color: #f1f4ff;
+  font-size: clamp(15px, 2vw, 22px);
+}
+/* ===== SEARCH BAR ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(820px, 100%);
+  margin: 0 auto;
+  padding: 10px;
+  background: #ffffffeb;
+  border: 1px solid #ffffff;
+  border-radius: 60px;
+  box-shadow: 0 12px 35px #19148b30;
+  backdrop-filter: blur(12px);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.search-bar:focus-within {
+  box-shadow: 0 0 0 4px #ffffff45, 0 15px 40px #17108045;
+  transform: translateY(-3px);
+}
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  padding: 17px 18px;
+  background: #f6f7ff;
+  border: 1px solid transparent;
+  border-radius: 40px;
+}
+.search-field:focus-within {
+  border-color: #a69bff;
+}
+.search-field span {
+  flex-shrink: 0;
+}
+.search-field input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #302c72;
+  font: inherit;
+  font-size: 15px;
+}
+.search-field input::placeholder {
+  color: #737a9a;
+}
+.search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 17px 25px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(120deg, #7051ff, #4025d7);
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.3s ease,box-shadow 0.3s ease;
+}
+.search-button span {
+  font-size: 23px;
+  line-height: 15px;
+}
+.search-button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 20px #5136e966;
+}
+/* ===== FLOATING DECORATIONS ===== */
+.circle {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+.circle-one {
+  width: 160px;
+  height: 160px;
+  left: -65px;
+  top: 75px;
+  background: #bd8bff55;
+  border: 2px solid #d6bdff44;
+}
+.circle-two {
+  width: 48px;
+  height: 48px;
+  left: 10%;
+  top: 200px;
+  background: #ed70ff88;
+  animation-delay: -2s;
+}
+.circle-three {
+  width: 180px;
+  height: 180px;
+  right: -55px;
+  top: 90px;
+  background: #68b6ff45;
+  border: 2px solid #c3ddff55;
+  animation-delay: -3s;
+}
+.circle-four {
+  width: 40px;
+  height: 40px;
+  right: 11%;
+  top: 270px;
+  background: #a9c5ff88;
+  animation-delay: -1s;
+}
+/* ===== JOB SECTION ===== */
+.jobs-section {
+  position: relative;
+  padding: 28px 5% 60px;
+  background: #f7f7ff;
+}
+.section-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 35px;
+  color: #3928b4;
+  text-align: center;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 800;
+}
+.star {
+  color: #ffcd45;
+  font-size: 42px;
+  text-shadow: 0 2px 3px #6445e9;
+}
+/* Job card grid */
+.job-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+/* Individual card */
+.job-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  min-width: 0;
+  padding: 28px 25px;
+  background: #ffffffd9;
+  border: 1px solid #ecebff;
+  border-radius: 22px;
+  box-shadow: 0 8px 25px #3928b410;
+  transition: transform 0.35s ease,box-shadow 0.35s ease,border-color 0.35s ease;
+  animation: fadeUp 0.8s ease both;
+}
+.job-card:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.job-card:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.job-card:nth-child(4) {
+  animation-delay: 0.36s;
+}
+.job-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px #4b35ce20;
+  border-color: #c7bdff;
+}
+/* Company icon */
+.company-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 76px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  font-size: 32px;
+  transition: transform 0.4s ease;
+}
+.job-card:hover .company-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+.laptop {
+  background: #e8e1ff;
+}
+.palette {
+  background: #fff1cc;
+}
+.python {
+  background: #dff5ed;
+}
+.data {
+  background: #dceaff;
+}
+/* Job information */
+.job-info {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 48px;
+}
+.job-info h3 {
+  margin: 0 0 8px;
+  color: #29266f;
+  font-size: 22px;
+}
+.company,
+.location {
+  margin-bottom: 10px;
+  color: #737d9f;
+  font-size: 16px;
+}
+.salary {
+  margin-top: 16px;
+  color: #159666;
+  font-weight: 800;
+  font-size: 16px;
+}
+.job-type {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 7px 14px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.full-time {
+  background: #ece8ff;
+  color: #6245ed;
+}
+.remote {
+  background: #dff5ed;
+  color: #13875e;
+}
+.internship {
+  background: #fff0d7;
+  color: #a76700;
+}
+/* Apply button */
+.apply-button {
+  position: absolute;
+  right: 24px;
+  bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 21px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #7550ff, #4b2be3);
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.apply-button span {
+  font-size: 21px;
+}
+.apply-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px #5538df55;
+}
+/* ===== ABOUT ===== */
+.about-section {
+  padding: 55px 20px;
+  text-align: center;
+  background: white;
+}
+.about-section h2 {
+  margin-bottom: 15px;
+  font-size: 30px;
+  color: #3928b4;
+}
+.about-section p {
+  margin-bottom: 20px;
+  color: #737d9f;
+  line-height: 1.7;
+}
+.back-link {
+  display: inline-block;
+  padding: 12px 22px;
+  background: #4b35dc;
+  border-radius: 30px;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+.back-link:hover {
+  transform: translateY(-3px);
+}
+/* ===== FOOTER ===== */
+.footer {
+  padding: 22px;
+  text-align: center;
+  background: #3424ad;
+  color: white;
+  font-size: 14px;
+}
+/* ===== ANIMATIONS ===== */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+@keyframes fadeUp {
+  from {  opacity: 0;
+          transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes textGlow {
+  from { text-shadow: 0 0 5px #ffffff22; }
+  to { text-shadow: 0 0 20px #ffb3ff88; }
+}
+/* ===== TABLET ===== */
+@media (max-width: 850px) {
+  .hero { padding: 65px 25px 80px; }
+  .job-container { gap: 16px; }
+  .job-card { gap: 14px;
+    padding: 22px 18px; }
+  .company-icon {
+    flex-basis: 58px;
+    width: 58px;
+    height: 58px;
+    font-size: 25px;
+  }
+  .job-info h3 { font-size: 19px; }
+  .apply-button {
+    right: 15px;
+    bottom: 15px;
+    padding: 10px 15px;
+  }
+}
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .navbar { padding: 18px 4%; }
+  .logo { gap: 6px;
+          font-size: 20px; }
+  .logo-icon { font-size: 23px; }
+  .nav-links {
+    gap: 14px;
+  }
+  .nav-links a {
+    font-size: 13px;
+  }
+  .hero {
+    min-height: 400px;
+    padding: 60px 18px 75px;
+    border-radius: 0 0 35% 4% / 0 0 5% 3%;
+  }
+  .eyebrow {
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.7px;
+  }
+  .eyebrow span {width: 18px;}
+  .hero h1 {
+    font-size: clamp(32px, 8vw, 45px);
+    letter-spacing: -1px;
+  }
+  .hero-description {
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 24px;
+  }
+  .search-field {
+    flex: auto;
+    width: 100%;
+    padding: 14px;
+  }
+  .search-button {
+    width: 100%;
+    padding: 14px;
+  }
+  .circle-one {
+    width: 100px;
+    height: 100px;
+    left: -45px;
+  }
+  .circle-two {
+    left: 5%;
+    width: 30px;
+    height: 30px;
+  }
+  .circle-three {
+    width: 100px;
+    height: 100px;
+    right: -40px;
+  }
+  .circle-four {
+    right: 5%;
+    width: 25px;
+    height: 25px;
+  }
+  .jobs-section {
+    padding: 25px 5% 40px;
+  }
+  .section-title {
+    gap: 9px;
+    margin-bottom: 25px;
+    font-size: 25px;
+  }
+  .star {
+    font-size: 30px;
+  }
+  .job-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .job-card {
+    gap: 13px;
+    padding: 20px 15px;
+  }
+  .company-icon {
+    flex-basis: 52px;
+    width: 52px;
+    height: 52px;
+    font-size: 23px;
+  }
+  .job-info h3 {
+    font-size: 17px;
+  }
+  .company,
+  .location {
+    font-size: 13px;
+  }
+  .salary {
+    font-size: 13px;
+  }
+  .job-type {
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+  .apply-button {
+    right: 13px;
+    bottom: 13px;
+    padding: 9px 12px;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+}
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+   </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="#home" class="logo">
+      <span class="logo-icon">💼</span>
+      <span>Hire<span class="logo-highlight">Sprint</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#home" class="active">Home</a>
+      <a href="#jobs">Jobs</a>
+      <a href="#about">About</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </header>
+  <!-- Hero Section -->
+  <main>
+    <section class="hero" id="home">
+      <div class="circle circle-one"></div>
+      <div class="circle circle-two"></div>
+      <div class="circle circle-three"></div>
+      <div class="circle circle-four"></div>
+      <div class="hero-content">
+        <p class="eyebrow">
+          <span></span>
+          YOUR NEXT OPPORTUNITY AWAITS
+          <span></span>
+        </p>
+        <h1>
+          Find Your <span class="dream">Dream</span>
+          <span class="job-word">Job!</span>
+        </h1>
+        <p class="hero-description">
+          Discover new opportunities and build your career.
+        </p>
+        <!-- Search Bar -->
+        <form class="search-bar" action="#jobs">
+          <label class="search-field">
+            <span>💼</span>
+            <input
+              type="text"
+              name="title"
+              placeholder="Enter Job Title..."
+              aria-label="Job title">
+          </label>
+          <label class="search-field">
+            <span>📍</span>
+            <input
+              type="text"
+              name="location"
+              placeholder="Enter Location..."
+              aria-label="Job location">
+          </label>
+          <button type="submit" class="search-button">
+            <span>⌕</span> Search Jobs
+          </button>
+        </form>
+      </div>
+    </section>
+    <!-- Latest Jobs -->
+    <section class="jobs-section" id="jobs">
+      <h2 class="section-title">
+        <span class="star">✦</span>
+        Latest Job Openings
+      </h2>
+      <div class="job-container">
+        <!-- Job Card 1 -->
+        <article class="job-card">
+          <div class="company-icon laptop">💻</div>
+          <div class="job-info">
+            <span class="job-type full-time">Full Time</span>
+            <h3>Web Developer</h3>
+            <p class="company">Company: Tech Solutions</p>
+            <p class="location">📍 Pune</p>
+            <p class="salary">💵 ₹20,000 - ₹35,000</p>
+          </div>
+          <a href="#about" class="apply-button">
+            Apply Now <span>→</span>
+          </a>
+        </article>
+        <!-- Job Card 2 -->
+        <article class="job-card">
+          <div class="company-icon palette">🎨</div>
+          <div class="job-info">
+            <span class="job-type remote">Remote</span>
+            <h3>Web Designer</h3>
+            <p class="company">Company: Creative Studio</p>
+            <p class="location">📍 Mumbai</p>
+            <p class="salary">💵 ₹15,000 - ₹25,000</p>
+          </div>
+          <a href="#about" class="apply-button">
+            Apply Now <span>→</span>
+          </a>
+        </article>
+        <!-- Job Card 3 -->
+        <article class="job-card">
+          <div class="company-icon python">🐍</div>
+          <div class="job-info">
+            <span class="job-type full-time">Full Time</span>
+            <h3>Python Developer</h3>
+            <p class="company">Company: Digital Works</p>
+            <p class="location">📍 Remote</p>
+            <p class="salary">💵 ₹25,000 - ₹40,000</p>
+          </div>
+          <a href="#about" class="apply-button">
+            Apply Now <span>→</span>
+          </a>
+        </article>
+        <!-- Job Card 4 -->
+        <article class="job-card">
+          <div class="company-icon data">📊</div>
+          <div class="job-info">
+            <span class="job-type internship">Internship</span>
+            <h3>Data Entry</h3>
+            <p class="company">Company: Smart Office</p>
+            <p class="location">📍 Nashik</p>
+            <p class="salary">💵 ₹10,000 - ₹18,000</p>
+          </div>
+          <a href="#about" class="apply-button">
+            Apply Now <span>→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <h2>About JobFinder</h2>
+      <p>
+        We help job seekers discover opportunities and build
+        successful careers.
+      </p>
+      <a href="#home" class="back-link">Explore Jobs ↑</a>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <p>© 2026 JobFinder | Designed with 💜</p>
+  </footer>
+</body>
+</html>
